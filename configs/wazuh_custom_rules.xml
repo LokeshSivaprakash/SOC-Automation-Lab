@@ -1,0 +1,26 @@
+<!-- Custom Wazuh Rules for SOC Automation Lab -->
+<!-- Location on server: /var/ossec/etc/rules/local_rules.xml -->
+
+<group name="mimikatz,credential_access,">
+
+  <rule id="100002" level="15">
+    <if_group>syscheck</if_group>
+    <field name="win.eventdata.originalFileName" 
+           type="pcre2">(?i)mimikatz</field>
+    <description>Mimikatz Usage Detected</description>
+    <mitre>
+      <id>T1003</id>
+    </mitre>
+  </rule>
+
+  <rule id="100003" level="15">
+    <if_group>windows</if_group>
+    <field name="win.eventdata.image" 
+           type="pcre2">(?i)mimikatz</field>
+    <description>Mimikatz process execution detected on $(win.system.computer)</description>
+    <mitre>
+      <id>T1003</id>
+    </mitre>
+  </rule>
+
+</group>
