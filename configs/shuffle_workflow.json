@@ -1,0 +1,65 @@
+{
+  "name": "Loki-SOC-Auto-Project-Update",
+  "description": "Automated SOC pipeline - Wazuh alert to TheHive case creation",
+  "steps": [
+    {
+      "step": 1,
+      "name": "Webhook_1",
+      "type": "trigger",
+      "description": "Receives alert from Wazuh via webhook",
+      "input": "Wazuh alert JSON payload",
+      "output": "Raw alert data"
+    },
+    {
+      "step": 2,
+      "name": "SHA256-Hash",
+      "type": "action",
+      "app": "Shuffle Tools",
+      "description": "Extracts SHA256 hash from the alert payload",
+      "input": "Raw alert data from Webhook",
+      "output": "SHA256 hash value"
+    },
+    {
+      "step": 3,
+      "name": "Virustotal_v3_1",
+      "type": "action",
+      "app": "VirusTotal v3",
+      "description": "Enriches SHA256 hash with VirusTotal threat intelligence",
+      "input": "SHA256 hash from previous step",
+      "output": "VirusTotal scan results"
+    },
+    {
+      "step": 4,
+      "name": "TheHive_1",
+      "type": "action",
+      "app": "TheHive",
+      "description": "Creates incident case in TheHive with full alert context",
+      "input": "Alert details + VirusTotal enrichment results",
+      "output": "TheHive case ID and case URL",
+      "case_details": {
+        "title": "Wazuh Alert - $alert_title",
+        "severity": "HIGH",
+        "tlp": "AMBER",
+        "source": "Wazuh Alert",
+        "tags": ["T1003", "Credential Access", "Mimikatz"]
+      }
+    },
+    {
+      "step": 5,
+      "name": "Email_1",
+      "type": "action",
+      "app": "Email",
+      "description": "Sends email notification to analyst with case details",
+      "input": "TheHive case details",
+      "output": "Email sent to analyst"
+    }
+  ],
+  "tools": [
+    "Wazuh",
+    "Shuffle SOAR",
+    "VirusTotal v3",
+    "TheHive",
+    "Email"
+  ],
+  "trigger": "Wazuh webhook on rule level >= 10"
+}
