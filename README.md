@@ -23,7 +23,7 @@ When a threat is detected on an endpoint:
 
 ## 🏗️ Architecture
 
-![SOC Architecture](architecture/SOC_Autoation_Project_Architect_and_workflow.svg)
+![SOC Architecture](architecture/SOC_Architecture.svg)
 
 ### Infrastructure
 
@@ -60,7 +60,7 @@ When a threat is detected on an endpoint:
 > Full MITRE ATT&CK mapping and threat intelligence built in.
 
 ### Mimikatz Execution on Windows VM
-![Mimikatz](screenshots/Vm_windows.png)
+![Mimikatz](screenshots/Mimikatz.png)
 > Mimikatz 2.2.0 executed on the monitored Windows 11 VM
 > to simulate a real credential dumping attack.
 
